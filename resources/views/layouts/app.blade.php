@@ -13,65 +13,93 @@
 
     <!-- Custom CSS for Admin Panel -->
     <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            width: 250px;
-            padding: 20px;
-            background-color: #343a40;
-            color: #fff;
-        }
-        .sidebar .nav-link {
-            color: #adb5bd;
-            padding: 10px 15px;
-            border-radius: 0.25rem;
-            margin-bottom: 5px;
-        }
-        .sidebar .nav-link:hover {
-            background-color: #495057;
-            color: #fff;
-        }
-        .sidebar .nav-link.active {
-            background-color: #0d6efd;
-            color: #fff;
-        }
-        .sidebar .nav-link .fa-fw {
-            margin-right: 10px;
-        }
-        .sidebar-header {
-            margin-bottom: 20px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #495057;
-        }
-        .sidebar-header a {
-            color: #fff;
-            font-size: 1.5rem;
-            font-weight: bold;
-            text-decoration: none;
-        }
-        .main-content {
-            margin-left: 250px;
-            padding: 20px;
-        }
-        .navbar-admin {
-            background-color: #fff;
-            border-bottom: 1px solid #dee2e6;
-        }
-        .card-icon {
-            font-size: 2.5rem;
-            opacity: 0.3;
-        }
-    </style>
+    :root {
+        --primary-green: #37473f;   /* hijau tua tombol login */
+        --secondary-green: #4b5f55; /* hover tombol login */
+        --accent-beige: #f5f5f5;    /* latar belakang */
+    }
+
+    body {
+        background-color: var(--accent-beige);
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 250px;
+        padding: 20px;
+        background-color: var(--primary-green);
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .sidebar-header a {
+        color: #fff;
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+    .sidebar .nav-link {
+        color: #f0f0f0;
+        padding: 10px 15px;
+        border-radius: 10px;
+        margin-bottom: 8px;
+        transition: background-color 0.2s ease;
+    }
+
+    .sidebar .nav-link i {
+        margin-right: 10px;
+    }
+
+    .sidebar .nav-link:hover {
+        background-color: var(--secondary-green);
+    }
+
+    .sidebar .nav-link.active {
+        background-color: #2f3933;
+    }
+
+    .sidebar .logout-link {
+        margin-top: auto;
+        color: #f0f0f0;
+        border-top: 1px solid rgba(255,255,255,0.2);
+        padding-top: 15px;
+    }
+
+    .sidebar .logout-link:hover {
+        color: #ffffff;
+    }
+
+    .main-content {
+        margin-left: 250px;
+        padding: 25px;
+    }
+
+    .navbar-admin {
+        background-color: #fff;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .navbar-text strong {
+        color: var(--primary-green);
+    }
+
+    .alert {
+        border-radius: 8px;
+    }
+</style>
+
 </head>
 <body>
     <div class="sidebar">
-        <div class="sidebar-header text-center">
-            <a href="{{ route('admin.dashboard') }}">CaPaw!</a>
+        <div class="sidebar-header">
+            <a href="{{ route('admin.dashboard') }}">CaPaw! 🐾</a>
         </div>
         <ul class="nav flex-column">
             <li class="nav-item">
@@ -84,11 +112,6 @@
                     <i class="fa-fw fas fa-tags"></i> Kategori
                 </a>
             </li>
-            {{-- <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('admin.locations.*') ? 'active' : '' }}" href="{{ route('admin.locations.index') }}">
-                    <i class="fa-fw fas fa-map-marker-alt"></i> Lokasi
-                </a>
-            </li> --}}
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('admin.animals.*') ? 'active' : '' }}" href="{{ route('admin.animals.index') }}">
                     <i class="fa-fw fas fa-paw"></i> Hewan
@@ -100,8 +123,8 @@
                 </a>
             </li>
         </ul>
-        <div class="mt-auto" style="position: absolute; bottom: 20px; width: calc(100% - 40px);">
-             <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+        <div class="logout-link mt-4">
+            <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                 <i class="fa-fw fas fa-sign-out-alt"></i> Logout
             </a>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

@@ -1,8 +1,3 @@
-@extends('layouts.app-user') {{-- Menggunakan layout user agar navbar konsisten --}}
-
-@section('title', 'Login')
-
-@section('content')
 @extends('layouts.app-user')
 
 @section('title', 'Login')
@@ -10,27 +5,16 @@
 @section('content')
 <style>
     :root {
-        --primary-dark: #3c4a46; /* hijau gelap */
-        --soft-brown: #a1887f;
-        --light-bg: #fdf9f4;
+        --primary-teal: #00897B;
+        --light-teal: #e0f2f1;
+        --light-beige: #fdf9f4;
+        --accent: #FFD1BA;
         --card-radius: 1.5rem;
     }
 
     body {
-        background-color: var(--light-bg);
+        background-color: var(--light-beige);
         font-family: 'Poppins', sans-serif;
-    }
-
-    nav.navbar {
-        background-color: var(--primary-dark) !important;
-    }
-
-    footer {
-        background-color: var(--primary-dark);
-        color: #fff;
-        padding: 0.75rem 0;
-        text-align: center;
-        font-size: 0.9rem;
     }
 
     .auth-container {
@@ -44,29 +28,24 @@
     .auth-card {
         max-width: 720px;
         width: 100%;
-        border: none;
         border-radius: var(--card-radius);
         overflow: hidden;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-        background-color: white;
+        box-shadow: 0 8px 30px rgba(0, 137, 123, 0.1);
+        background-color: #fff;
     }
 
     .auth-image-side {
         background: url("{{ asset('image/cat.png') }}") no-repeat center center;
         background-size: contain;
-        background-color: #eee;
+        background-color: var(--light-teal);
     }
 
     .auth-form-side {
-        padding: 2rem 2rem;
+        padding: 2rem;
     }
 
-    .text-dark-green {
-        color: var(--primary-dark);
-    }
-
-    .btn-brown {
-        background-color: var(--primary-dark);
+    .btn-teal {
+        background-color: var(--primary-teal);
         border: none;
         color: #fff;
         font-weight: 600;
@@ -75,18 +54,38 @@
         transition: all 0.3s ease;
     }
 
-    .btn-brown:hover {
-        background-color: #2f3a37;
-    }
-
-    .form-control:focus {
-        border-color: var(--soft-brown);
-        box-shadow: 0 0 0 0.15rem rgba(161, 136, 127, 0.3);
+    .btn-teal:hover {
+        background-color: #00796b;
     }
 
     .form-control {
         border-radius: 0.6rem;
         background-color: #fefefe;
+    }
+
+    .form-control:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 0.15rem rgba(255, 209, 186, 0.4);
+    }
+
+    .error-cat {
+        max-width: 120px;
+        margin: 0 auto 10px;
+    }
+
+    .password-toggle {
+            position: absolute;
+            top: 52px;
+            right: 1rem;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #aaa;
+            z-index: 5;
+            font-size: 1rem;
+        }
+
+    .position-relative {
+        position: relative;
     }
 
     @media (max-width: 768px) {
@@ -106,43 +105,53 @@
         <div class="col-lg-8">
             <div class="card auth-card shadow-lg">
                 <div class="row g-0">
-                    <div class="col-lg-6 d-none d-lg-block auth-image-side">
-                        {{-- Sisi gambar, hanya tampil di layar besar --}}
-                    </div>
+                    <div class="col-lg-6 d-none d-lg-block auth-image-side"></div>
+
                     <div class="col-lg-6 auth-form-side">
                         <div class="text-center mb-4">
-                            <h2 class="fw-bold text-brown"><i class="fas fa-paw me-2"></i>Selamat Datang Kembali</h2>
+                            <h2 class="fw-bold text-teal"><i class="fas fa-paw me-2"></i>Selamat Datang Kembali</h2>
                             <p class="text-muted">Login untuk melanjutkan dan membantu hewan.</p>
                         </div>
 
-                        {{-- Menampilkan pesan error --}}
+                        {{-- Pesan Error --}}
                         @if(session('error'))
-                            <div class="alert alert-danger">{{ session('error') }}</div>
+                            <div class="text-center">
+                                <img src="{{ asset('image/sad-cat.png') }}" class="error-cat" alt="Sad Cat">
+                            </div>
+                            <div class="alert alert-danger text-center">
+                                {{ session('error') }}
+                            </div>
                         @endif
+
                         @if(session('success'))
-                            <div class="alert alert-success">{{ session('success') }}</div>
+                            <div class="alert alert-success text-center">{{ session('success') }}</div>
                         @endif
 
                         <form method="POST" action="{{ route('login.process') }}">
                             @csrf
                             <div class="mb-3">
                                 <label for="email" class="form-label">Alamat Email</label>
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                <input id="email" type="email"
+                                       class="form-control @error('email') is-invalid @enderror"
+                                       name="email" value="{{ old('email') }}" required autofocus>
                                 @error('email')
-                                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                    <span class="invalid-feedback d-block"><strong>{{ $message }}</strong></span>
                                 @enderror
                             </div>
 
-                            <div class="mb-3">
+                            <div class="mb-3 position-relative">
                                 <label for="password" class="form-label">Password</label>
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                                <input id="password" type="password"
+                                       class="form-control @error('password') is-invalid @enderror"
+                                       name="password" required>
+                                <i class="fas fa-eye password-toggle" id="togglePassword"></i>
                                 @error('password')
-                                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                    <span class="invalid-feedback d-block"><strong>{{ $message }}</strong></span>
                                 @enderror
                             </div>
 
                             <div class="d-grid mb-3">
-                                <button type="submit" class="btn btn-brown btn-lg">Login</button>
+                                <button type="submit" class="btn btn-teal btn-lg">Login</button>
                             </div>
 
                             <div class="text-center">
@@ -155,4 +164,15 @@
         </div>
     </div>
 </div>
+
+{{-- JS untuk Toggle Password --}}
+<script>
+    const toggle = document.getElementById('togglePassword');
+    const password = document.getElementById('password');
+    toggle.addEventListener('click', () => {
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        toggle.classList.toggle('fa-eye-slash');
+    });
+</script>
 @endsection

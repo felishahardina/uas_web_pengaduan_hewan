@@ -1,30 +1,64 @@
 @extends('layouts.app')
 @section('title', 'Detail Laporan')
+
 @section('content')
 <style>
     :root {
+        --primary-dark: #37473f;
         --primary-brown: #6d4c41;
+        --approved-color: #28a745;
+        --pending-color: #f0ad4e;
+        --rejected-color: #dc3545;
     }
-    .card-header-brown {
-        background-color: var(--primary-brown);
+
+    .card-header-custom {
+        background-color: var(--primary-dark);
         color: white;
     }
+
     .table-detail th {
-        width: 30%;
+        width: 35%;
         background-color: #f8f9fa;
+    }
+
+    .badge-approved {
+        background-color: var(--approved-color);
+    }
+
+    .badge-pending {
+        background-color: var(--pending-color);
+        color: black;
+    }
+
+    .badge-rejected {
+        background-color: var(--rejected-color);
+    }
+
+    .btn-dark-green {
+        background-color: var(--primary-dark);
+        border: none;
+        color: #fff;
+    }
+
+    .btn-dark-green:hover {
+        background-color: #2d3a35;
+        color: #fff;
     }
 </style>
 
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <a href="{{ route('admin.reports.index') }}" class="btn btn-secondary"><i class="fas fa-arrow-left me-2"></i>Kembali ke Daftar Laporan</a>
+    <a href="{{ route('admin.reports.index') }}" class="btn btn-secondary">
+        <i class="fas fa-arrow-left me-2"></i>Kembali ke Daftar Laporan
+    </a>
 </div>
 
 <div class="card shadow-sm">
-    <div class="card-header card-header-brown">
-        <h4 class="mb-0">Detail Laporan #{{ $report->id }}</h4>
+    <div class="card-header card-header-custom">
+        <h4 class="mb-0"><i class="fas fa-info-circle me-2"></i>Detail Laporan #{{ $report->id }}</h4>
     </div>
     <div class="card-body">
         <div class="row">
+            <!-- Informasi Laporan -->
             <div class="col-md-7">
                 <h5>Informasi Laporan</h5>
                 <table class="table table-bordered table-detail">
@@ -32,11 +66,12 @@
                         <th>Status Laporan</th>
                         <td>
                             @php
-                                $statusClass = [
-                                    'pending' => 'bg-warning text-dark',
-                                    'approved' => 'bg-success',
-                                    'rejected' => 'bg-danger',
-                                ][$report->status] ?? 'bg-secondary';
+                                $statusClass = match($report->status) {
+                                    'approved' => 'badge-approved',
+                                    'pending' => 'badge-pending',
+                                    'rejected' => 'badge-rejected',
+                                    default => 'bg-secondary'
+                                };
                             @endphp
                             <span class="badge {{ $statusClass }} fs-6">{{ ucfirst($report->status) }}</span>
                         </td>
@@ -63,6 +98,7 @@
                     </tr>
                 </table>
 
+                <!-- Informasi Pelapor -->
                 <h5 class="mt-4">Informasi Pelapor</h5>
                 <table class="table table-bordered table-detail">
                     <tr>
@@ -83,6 +119,8 @@
                     </tr>
                 </table>
             </div>
+
+            <!-- Gambar -->
             <div class="col-md-5">
                 <h5>Foto Laporan</h5>
                 @if($report->image_path)
@@ -93,6 +131,8 @@
             </div>
         </div>
     </div>
+
+    <!-- Tombol Aksi -->
     <div class="card-footer text-end">
         @if($report->status == 'pending')
             <form action="{{ route('admin.reports.approve', $report->id) }}" method="POST" class="d-inline">
@@ -103,7 +143,7 @@
             <form action="{{ route('admin.reports.reject', $report->id) }}" method="POST" class="d-inline">
                 @csrf
                 @method('PATCH')
-                <button type="submit" class="btn btn-warning"><i class="fas fa-times me-2"></i>Reject Laporan</button>
+                <button type="submit" class="btn btn-warning text-dark"><i class="fas fa-times me-2"></i>Reject Laporan</button>
             </form>
         @endif
         <form action="{{ route('admin.reports.destroy', $report->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin hapus laporan ini secara permanen?');">

@@ -3,19 +3,33 @@
 @section('title', 'Daftar Hewan')
 
 @section('content')
-{{-- Menambahkan style kustom untuk tema --}}
+
+{{-- Tema Hijau Gelap --}}
 <style>
     :root {
-        --primary-brown: #6d4c41;
+        --dark-green: #37473f;
+        --soft-green: #4b5f55;
+        --white: #ffffff;
+        --badge-info-custom: #88b4a3;
     }
-    .card-header-brown {
-        background-color: var(--primary-brown);
-        color: white;
+
+    .card-header-darkgreen {
+        background: linear-gradient(90deg, var(--dark-green), var(--soft-green));
+        color: var(--white);
+    }
+
+    .badge-info-custom {
+        background-color: var(--badge-info-custom);
+        color: #fff;
+    }
+
+    .table th {
+        background-color: #f5f5f5;
     }
 </style>
 
 <div class="card shadow mb-4">
-    <div class="card-header card-header-brown">
+    <div class="card-header card-header-darkgreen">
         <h6 class="m-0 font-weight-bold"><i class="fas fa-paw me-2"></i>Daftar Hewan Terdata</h6>
     </div>
     <div class="card-body">
@@ -38,7 +52,7 @@
                         <td>{{ $animal->name }}</td>
                         <td>{{ $animal->jenis_kelamin }}</td>
                         <td>
-                            <span class="badge bg-info">{{ $animal->category->name ?? 'N/A' }}</span>
+                            <span class="badge badge-info-custom">{{ $animal->category->name ?? 'N/A' }}</span>
                         </td>
                         <td>{{ $animal->created_at->format('d F Y') }}</td>
                     </tr>

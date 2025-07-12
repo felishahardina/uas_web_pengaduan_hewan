@@ -3,24 +3,39 @@
 @section('title', 'Manajemen Kategori')
 
 @section('content')
-{{-- Menambahkan style kustom untuk tema coklat --}}
+
+{{-- Tema Hijau Gelap --}}
 <style>
     :root {
-        --primary-brown: #6d4c41;
+        --dark-green: #37473f;
+        --dark-green-hover: #2e3a35;
+        --soft-green: #4b5f55;
+        --white: #ffffff;
     }
-    .btn-brown {
-        background-color: var(--primary-brown);
-        border-color: var(--primary-brown);
-        color: #fff;
+
+    .btn-darkgreen {
+        background-color: var(--dark-green);
+        border-color: var(--dark-green);
+        color: var(--white);
     }
-    .btn-brown:hover {
-        background-color: #5d4037;
-        border-color: #5d4037;
-        color: #fff;
+
+    .btn-darkgreen:hover {
+        background-color: var(--dark-green-hover);
+        border-color: var(--dark-green-hover);
+        color: var(--white);
     }
-    .card-header-brown {
-        background-color: var(--primary-brown);
-        color: white;
+
+    .card-header-darkgreen {
+        background-color: var(--dark-green);
+        color: var(--white);
+    }
+
+    .text-darkgreen {
+        color: var(--dark-green);
+    }
+
+    .table th {
+        background-color: #f4f4f4;
     }
 </style>
 
@@ -28,7 +43,7 @@
     <!-- Kolom Form Tambah/Edit Kategori -->
     <div class="col-lg-4 mb-4">
         <div class="card shadow">
-            <div class="card-header card-header-brown">
+            <div class="card-header card-header-darkgreen">
                 <h6 class="m-0 font-weight-bold">Tambah Kategori Baru</h6>
             </div>
             <div class="card-body">
@@ -41,7 +56,7 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-                    <button type="submit" class="btn btn-brown mt-3 w-100">
+                    <button type="submit" class="btn btn-darkgreen mt-3 w-100">
                         <i class="fas fa-plus-circle me-2"></i>Tambah
                     </button>
                 </form>
@@ -52,8 +67,8 @@
     <!-- Kolom Tabel Daftar Kategori -->
     <div class="col-lg-8">
         <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Daftar Kategori Hewan</h6>
+            <div class="card-header py-3" style="background: linear-gradient(90deg, var(--dark-green), var(--soft-green)); color: white;">
+                <h6 class="m-0 font-weight-bold">Daftar Kategori Hewan</h6>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -71,7 +86,6 @@
                                 <td>{{ $categories->firstItem() + $key }}</td>
                                 <td>{{ $category->name }}</td>
                                 <td class="text-center">
-                                    {{-- Tombol Edit dan Hapus akan lebih baik jika menggunakan modal, namun untuk saat ini kita gunakan link biasa --}}
                                     <a href="{{ route('admin.categories.edit', $category->id) }}" class="btn btn-warning btn-sm" title="Edit">
                                         <i class="fas fa-edit"></i>
                                     </a>

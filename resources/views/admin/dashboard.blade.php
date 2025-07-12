@@ -3,25 +3,56 @@
 @section('title', 'Dashboard Admin')
 
 @section('content')
-{{-- Menambahkan style kustom untuk tema coklat --}}
+
+{{-- Gaya kustom --}}
 <style>
     :root {
-        --primary-brown: #6d4c41; /* Coklat tua */
-        --secondary-brown: #a1887f; /* Coklat muda */
-        --warning-brown: #d7ccc8; /* Coklat sangat muda untuk aksen */
+        --primary-green: #37473f;
+        --secondary-green: #4b5f55;
+        --soft-beige: #f5f5f5;
     }
-    .card.border-left-brown { border-left: .25rem solid var(--primary-brown) !important; }
+
+    body {
+        background-color: var(--soft-beige);
+    }
+
     .card.border-left-green { border-left: .25rem solid #1cc88a !important; }
     .card.border-left-blue { border-left: .25rem solid #36b9cc !important; }
     .card.border-left-orange { border-left: .25rem solid #f6c23e !important; }
+    .card.border-left-darkgreen { border-left: .25rem solid var(--primary-green) !important; }
 
-    .text-brown { color: var(--primary-brown) !important; }
+    .text-green { color: var(--primary-green) !important; }
     .text-xs { font-size: .8rem; letter-spacing: .05rem; }
-    .text-gray-300 { color: #dddfeb !important; }
     .font-weight-bold { font-weight: 700 !important; }
+
+    /* .card:hover {
+        transform: scale(1.02);
+        transition: all 0.3s ease-in-out;
+    } */
+
+    .badge {
+        padding: 0.4em 0.75em;
+        font-size: 0.85rem;
+        border-radius: 12px;
+    }
+
+    .badge-pending {
+        background-color: #f6c23e;
+        color: #212529;
+    }
+
+    .badge-approved {
+        background-color: #28a745;
+        color: #fff;
+    }
+
+    .badge-rejected {
+        background-color: #dc3545;
+        color: #fff;
+    }
 </style>
 
-{{-- Pesan Selamat Datang yang lebih ringkas --}}
+
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
 </div>
@@ -29,11 +60,11 @@
 <div class="row">
     <!-- Card: Total Laporan -->
     <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-brown shadow h-100 py-2">
+        <div class="card border-left-darkgreen shadow-sm h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-brown text-uppercase mb-1">
+                        <div class="text-xs font-weight-bold text-green text-uppercase mb-1">
                             Total Laporan</div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalReports }}</div>
                     </div>
@@ -47,7 +78,7 @@
 
     <!-- Card: Total Hewan -->
     <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-green shadow h-100 py-2">
+        <div class="card border-left-green shadow-sm h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
@@ -65,7 +96,7 @@
 
     <!-- Card: Total Kategori -->
     <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-blue shadow h-100 py-2">
+        <div class="card border-left-blue shadow-sm h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
@@ -83,13 +114,15 @@
 
     <!-- Card: Laporan Pending -->
     <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-orange shadow h-100 py-2">
+        <div class="card border-left-orange shadow-sm h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                             Laporan Pending</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ \App\Models\FelishaReport::where('status', 'pending')->count() }}</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            {{ \App\Models\FelishaReport::where('status', 'pending')->count() }}
+                        </div>
                     </div>
                     <div class="col-auto">
                         <i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -101,13 +134,13 @@
 </div>
 
 <!-- Tabel Laporan Terbaru -->
-<div class="card shadow mb-4">
-    <div class="card-header py-3" style="background-color: var(--primary-brown); color: white;">
-        <h6 class="m-0 font-weight-bold">Laporan Terbaru yang Perlu Ditinjau</h6>
+<div class="card shadow-sm mb-4">
+    <div class="card-header py-3" style="background: linear-gradient(90deg, #37473f, #4b5f55); color: #ffffff;">
+        <h6 class="m-0 font-weight-bold"> Laporan Terbaru yang Perlu Ditinjau </h6>
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-hover" id="dataTable" width="100%" cellspacing="0">
+            <table class="table table-hover table-striped table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
                         <th>Pelapor</th>
@@ -125,16 +158,19 @@
                         <td>
                             @php
                                 $statusClass = [
-                                    'pending' => 'bg-warning text-dark',
-                                    'approved' => 'bg-success',
-                                    'rejected' => 'bg-danger',
+                                'pending' => 'badge-pending',
+                                'approved' => 'badge-approved',
+                                'rejected' => 'badge-rejected',
                                 ][$report->status] ?? 'bg-secondary';
                             @endphp
                             <span class="badge {{ $statusClass }}">{{ ucfirst($report->status) }}</span>
                         </td>
                         <td>{{ $report->created_at->diffForHumans() }}</td>
                         <td class="text-center">
-                            <a href="{{ route('admin.reports.show', $report->id) }}" class="btn btn-info btn-sm" title="Lihat Detail">
+                            <a href="{{ route('admin.reports.show', $report->id) }}" 
+                                class="btn btn-outline-dark btn-sm" 
+                                style="border-color: #37473f; color: #37473f;" 
+                                title="Lihat Detail">
                                 <i class="fas fa-eye"></i>
                             </a>
                         </td>
@@ -149,4 +185,5 @@
         </div>
     </div>
 </div>
+
 @endsection

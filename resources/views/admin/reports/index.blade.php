@@ -3,19 +3,46 @@
 @section('title', 'Manajemen Laporan')
 
 @section('content')
-{{-- Menambahkan style kustom untuk tema --}}
 <style>
     :root {
-        --primary-brown: #6d4c41;
+        --primary-dark: #37473f;
+        --secondary-dark: #4b5f55;
+        --badge-pending: #f0ad4e;
+        --badge-approved: #28a745;
+        --badge-rejected: #dc3545;
     }
-    .card-header-brown {
-        background-color: var(--primary-brown);
-        color: white;
+
+    .card-header-dark {
+        background-color: var(--primary-dark);
+        color: #fff;
+    }
+
+    .btn-custom-dark {
+        border-color: var(--primary-dark);
+        color: var(--primary-dark);
+    }
+
+    .btn-custom-dark:hover {
+        background-color: var(--primary-dark);
+        color: #fff;
+    }
+
+    .badge-approved {
+        background-color: var(--badge-approved);
+    }
+
+    .badge-pending {
+        background-color: var(--badge-pending);
+        color: #000;
+    }
+
+    .badge-rejected {
+        background-color: var(--badge-rejected);
     }
 </style>
 
 <div class="card shadow mb-4">
-    <div class="card-header card-header-brown">
+    <div class="card-header card-header-dark">
         <h6 class="m-0 font-weight-bold"><i class="fas fa-file-alt me-2"></i>Manajemen Laporan Pengguna</h6>
     </div>
     <div class="card-body">
@@ -40,13 +67,14 @@
                             <td><span class="badge bg-secondary">{{ $report->animal->category->name ?? '-' }}</span></td>
                             <td class="text-center">
                                 @php
-                                    $statusClass = [
-                                        'pending' => 'bg-warning text-dark',
-                                        'approved' => 'bg-success',
-                                        'rejected' => 'bg-danger',
-                                    ][$report->status] ?? 'bg-secondary';
+                                    $badgeClass = match($report->status) {
+                                        'pending' => 'badge-pending',
+                                        'approved' => 'badge-approved',
+                                        'rejected' => 'badge-rejected',
+                                        default => 'bg-secondary',
+                                    };
                                 @endphp
-                                <span class="badge {{ $statusClass }}">{{ ucfirst($report->status) }}</span>
+                                <span class="badge {{ $badgeClass }}">{{ ucfirst($report->status) }}</span>
                             </td>
                             <td>{{ $report->created_at->format('d M Y') }}</td>
                             <td class="text-center">
@@ -58,19 +86,25 @@
                                     <form action="{{ route('admin.reports.approve', $report->id) }}" method="POST" class="d-inline" title="Approve">
                                         @csrf
                                         @method('PATCH')
-                                        <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-check"></i></button>
+                                        <button type="submit" class="btn btn-success btn-sm">
+                                            <i class="fas fa-check"></i>
+                                        </button>
                                     </form>
                                     <form action="{{ route('admin.reports.reject', $report->id) }}" method="POST" class="d-inline" title="Reject">
                                         @csrf
                                         @method('PATCH')
-                                        <button type="submit" class="btn btn-warning btn-sm"><i class="fas fa-times"></i></button>
+                                        <button type="submit" class="btn btn-warning btn-sm">
+                                            <i class="fas fa-times"></i>
+                                        </button>
                                     </form>
                                 @endif
 
                                 <form action="{{ route('admin.reports.destroy', $report->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin hapus laporan ini secara permanen?');" title="Hapus Permanen">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
                                 </form>
                             </td>
                         </tr>
@@ -83,9 +117,9 @@
             </table>
         </div>
         @if($reports->hasPages())
-        <div class="mt-3">
-            {{ $reports->links() }}
-        </div>
+            <div class="mt-3">
+                {{ $reports->links() }}
+            </div>
         @endif
     </div>
 </div>
