@@ -1,4 +1,3 @@
-<!-- login.blade.php (UPDATED with consistent colors) -->
 @extends('layouts.app-user')
 
 @section('title', 'Login')

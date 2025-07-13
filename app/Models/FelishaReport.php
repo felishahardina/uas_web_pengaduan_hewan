@@ -17,9 +17,8 @@ class FelishaReport extends Model
     ];
     public function animal()
     {
-        return $this->belongsTo(FelishaAnimal::class, 'animal_id');
+        return $this->belongsTo(FelishaAnimal::class, 'felisha_animal_id'); // ✅ BENAR
     }
-
 
     public function location()
     {

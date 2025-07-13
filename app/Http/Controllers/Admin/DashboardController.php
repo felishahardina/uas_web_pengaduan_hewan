@@ -12,7 +12,6 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // Pindahkan semua logika pengambilan data ke sini
         $totalReports = FelishaReport::count();
         $totalAnimals = FelishaAnimal::count();
         $totalCategories = FelishaCategory::count();
@@ -21,7 +20,7 @@ class DashboardController extends Controller
                                       ->take(5)
                                       ->get();
 
-        // Kirim semua data ke view
+        
         return view('admin.dashboard', compact(
             'totalReports',
             'totalAnimals',

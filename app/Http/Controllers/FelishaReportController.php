@@ -18,27 +18,19 @@ class FelishaReportController extends Controller
 
     /**
      * Menampilkan halaman dashboard untuk pengguna biasa.
+     * Disederhanakan: tidak lagi mengirim data statistik.
      */
     public function userDashboard()
     {
-        $user = auth()->user();
-
-        $totalLaporan = FelishaReport::where('user_id', $user->id)->count();
-        $laporanApproved = FelishaReport::where('user_id', $user->id)->where('status', 'approved')->count();
-        $laporanPending = FelishaReport::where('user_id', $user->id)->where('status', 'pending')->count();
-
+        // PERBAIKAN: Mengambil 3 laporan terbaru yang sudah disetujui
+        // untuk ditampilkan di dashboard pengguna.
         $latestApprovedReports = FelishaReport::where('status', 'approved')
-            ->orderByDesc('created_at')
+            ->with('animal')
+            ->latest()
             ->take(3)
-            ->with('animal') // pastikan relasi 'animal' sudah ada
             ->get();
 
-        return view('user.dashboard', compact(
-            'totalLaporan',
-            'laporanApproved',
-            'laporanPending',
-            'latestApprovedReports'
-        ));
+        return view('user.dashboard', compact('latestApprovedReports'));
     }
 
     /**
@@ -46,7 +38,7 @@ class FelishaReportController extends Controller
      */
     public function create()
     {
-        // PERBAIKAN: Hanya memuat data kategori yang diperlukan untuk form.
+        // Hanya memuat data kategori yang diperlukan untuk form.
         $categories = FelishaCategory::orderBy('name')->get();
         return view('lapor', compact('categories'));
     }
@@ -56,7 +48,6 @@ class FelishaReportController extends Controller
      */
     public function store(Request $request)
     {
-        // Validasi input, termasuk jenis kelamin
         $request->validate([
             'new_animal_name' => 'required|string|max:255',
             'jenis_kelamin' => ['required', Rule::in(['Jantan', 'Betina', 'Tidak Diketahui'])],
@@ -71,7 +62,7 @@ class FelishaReportController extends Controller
         $animal = FelishaAnimal::create([
             'name' => $request->input('new_animal_name'),
             'jenis_kelamin' => $request->input('jenis_kelamin'),
-            'category_id' => $request->input('felisha_category_id'), // Menggunakan 'category_id' yang benar
+            'category_id' => $request->input('felisha_category_id'),
         ]);
 
         // Proses upload gambar
@@ -93,76 +84,43 @@ class FelishaReportController extends Controller
 
     /**
      * Menampilkan riwayat laporan milik user yang sedang login.
+     * Ditambahkan data statistik untuk ditampilkan di view.
      */
-
-    // public function userReports()
-    // {
-    //     $userId = auth()->id();
-
-    //     $laporans = FelishaReport::where('user_id', $userId)->latest()->get();
-    //     $totalLaporan = $laporans->count();
-    //     $laporanApproved = $laporans->where('status', 'disetujui')->count();
-    //     $laporanPending = $laporans->where('status', 'menunggu')->count();
-
-    //     return view('laporan-saya', [
-    //         'reports' => $laporans,
-    //         'totalLaporan' => $totalLaporan,
-    //         'laporanApproved' => $laporanApproved,
-    //         'laporanPending' => $laporanPending,
-    //     ]);
-    // }
-
-    // public function userReports()
-    // {
-    //     // PERBAIKAN: Menghapus with('location') yang tidak relevan lagi.
-    //     $reports = FelishaReport::where('user_id', auth()->id())
-    //         ->with('animal')
-    //         ->latest()
-    //         ->paginate(10);
-    //     return view('laporan-saya', compact('reports'));
-    // }
-
     public function userReports()
     {
-        $userId = auth()->id();
+        $user = Auth::user();
 
-        $totalLaporan = \DB::table('felisha_reports')->where('user_id', $userId)->count();
+        // Mengambil data riwayat laporan dengan paginasi
+        $reports = $user->reports()->with('animal')->latest()->paginate(9);
 
-        $laporanApproved = \DB::table('felisha_reports')
-            ->where('user_id', $userId)
-            ->where('status', 'approved')
-            ->count();
+        // PERBAIKAN: Logika statistik dipindahkan ke sini.
+        $totalLaporan = $user->reports()->count();
+        $laporanPending = $user->reports()->where('status', 'pending')->count();
+        $laporanApproved = $user->reports()->where('status', 'approved')->count();
+        $laporanRejected = $user->reports()->where('status', 'rejected')->count();
 
-        $laporanPending = \DB::table('felisha_reports')
-            ->where('user_id', $userId)
-            ->where('status', 'pending')
-            ->count();
-
-        $reports = \App\Models\FelishaReport::with('animal')
-            ->where('user_id', $userId)
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
-
-        return view('laporan-saya', compact('reports', 'totalLaporan', 'laporanApproved', 'laporanPending'));
+        // Mengirim semua data (riwayat dan statistik) ke view
+        return view('laporan-saya', compact(
+            'reports', 
+            'totalLaporan', 
+            'laporanPending', 
+            'laporanApproved',
+            'laporanRejected'
+        ));
     }
-
-
+    
     // =======================================
     // METHOD UNTUK ADMIN
     // =======================================
 
     public function indexAdmin()
     {
-        // PERBAIKAN: Menghapus with('...location')
-        $reports = FelishaReport::with('user', 'animal.category')
-            ->latest()
-            ->paginate(10);
+        $reports = FelishaReport::with('user', 'animal.category')->latest()->paginate(10);
         return view('admin.reports.index', compact('reports'));
     }
 
     public function showAdmin(FelishaReport $report)
     {
-        // PERBAIKAN: Menghapus load('...location')
         $report->load('user', 'animal.category');
         return view('admin.reports.show', compact('report'));
     }
@@ -184,14 +142,8 @@ class FelishaReportController extends Controller
         if ($report->image_path && Storage::disk('public')->exists($report->image_path)) {
             Storage::disk('public')->delete($report->image_path);
         }
-
+        
         $report->delete();
         return redirect()->route('admin.reports.index')->with('success', 'Laporan berhasil dihapus.');
-    }
-
-    public function show($id)
-    {
-        $report = Report::with('animal')->findOrFail($id);
-        return view('laporan.detail', compact('report'));
     }
 }
