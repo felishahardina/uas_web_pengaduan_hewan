@@ -1,6 +1,14 @@
 <style>
+    :root {
+        --primary-green: #37473f;
+        --secondary-green: #4b5f55;
+        --soft-beige: #f5f5f5;
+        --accent: #FFD1BA;
+    }
+
     .sidebar-custom {
-        background-color: #6d4c41; /* Coklat tua */
+        background-color: var(--primary-green);
+        /* hijau tua */
         color: #ffffff;
         padding: 20px;
         height: 100%;
@@ -26,7 +34,8 @@
 
     .sidebar-custom .nav-link:hover,
     .sidebar-custom .nav-link.active {
-        background-color: #8d6e63;
+        background-color: var(--secondary-green);
+        /* hijau abu tua */
         color: #fff;
     }
 
@@ -39,16 +48,18 @@
         margin-top: 20px;
         border-radius: 8px;
         font-weight: bold;
-        border: 1px solid #ffffff;
-        color: #ffffff;
+        border: 1px solid #FFD1BA;
+        color: #FFD1BA;
+        transition: all 0.2s ease-in-out;
     }
 
     .sidebar-custom .btn-outline-danger:hover {
-        background-color: #d32f2f;
-        color: #fff;
-        border-color: #d32f2f;
+        background-color: #FFD1BA;
+        color: #37473f;
+        border-color: #FFD1BA;
     }
 </style>
+
 
 <div class="sidebar-custom">
     <h4>CaPaw! 🐾</h4>

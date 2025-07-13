@@ -8,7 +8,7 @@ class FelishaAnimal extends Model
 {
     protected $table = 'felisha_animals'; // <- Tambahan ini
 
-    protected $fillable = ['name', 'jenis_kelamin', 'category_id'];
+    protected $fillable = ['name', 'jenis_kelamin', 'category_id', 'image'];
 
     public function category()
     {

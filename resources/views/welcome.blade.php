@@ -10,149 +10,157 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary-teal: #00897B;
-            --secondary-teal: #26a69a;
-            --light-teal: #e0f2f1;
-            --light-beige: #F0FFF9;
-            --accent: #FFD1BA;
-            --radius: 1rem;
-        }
+    :root {
+        --primary-green: #37473f;
+        --secondary-green: #4b5f55;
+        --soft-beige: #f5f5f5;
+        --accent: #FFD1BA;
+        --radius: 1rem;
+    }
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--light-beige);
-            color: #333;
-            position: relative;
-        }
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: var(--soft-beige);
+        color: #333;
+    }
 
-        .navbar {
-            background-color: var(--primary-teal);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
+    /* Navbar */
+    .navbar {
+        background-color: var(--primary-green);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
 
-        .btn-dark-green {
-            background-color: var(--primary-teal);
-            color: white;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
+    /* Hero Section */
+    .hero-section {
+        min-height: 90vh;
+        background: linear-gradient(to right, var(--soft-beige), #ffffff); 
+        padding-top: 4rem;
+        padding-bottom: 4rem;
+        position: relative;
+        overflow: hidden;
+        border-bottom: 2px dashed #ccc;
+    }
 
-        .btn-dark-green:hover {
-            background-color: var(--secondary-teal);
-            transform: scale(1.05);
-        }
+    .hero-card {
+        background-color: #ffffff;
+        border-radius: var(--radius);
+        box-shadow: 0 8px 24px rgba(55, 71, 63, 0.08); 
+        padding: 2rem;
+        transition: all 0.3s ease;
+    }
 
-        .hero-section {
-            min-height: 90vh;
-            background: linear-gradient(to right, #e0f2f1, #ffffff);
-            border-bottom: 2px dashed #ccc;
-            padding-top: 4rem;
-            padding-bottom: 4rem;
-            position: relative;
-            overflow: hidden;
-        }
+    .hero-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 28px rgba(55, 71, 63, 0.15);
+    }
 
-        .paw-print-bg {
-            position: absolute;
-            width: 100px;
-            height: auto;
-            opacity: 0.04;
-            z-index: 0;
-        }
+    /* Tombol */
+    .btn-dark-green {
+        background-color: var(--primary-green);
+        color: white;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
 
-        .paw-print-left {
-            top: 10%;
-            left: 3%;
-        }
+    .btn-dark-green:hover {
+        background-color: var(--secondary-green);
+        transform: scale(1.05);
+    }
 
-        .paw-print-right {
-            bottom: 10%;
-            right: 3%;
-        }
+    .btn-outline-dark {
+        border-color: var(--primary-green);
+        color: var(--primary-green);
+        font-weight: 600;
+        transition: 0.3s ease;
+    }
 
-        .card-report {
-            background-color: #ffffff;
-            border-radius: 1.25rem;
-            box-shadow: 0 8px 24px rgba(0, 137, 123, 0.08);
-            transition: all 0.3s ease;
-            border: none;
-        }
+    .btn-outline-dark:hover {
+        background-color: var(--primary-green);
+        color: white;
+    }
 
-        .card-report:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 28px rgba(0, 137, 123, 0.15);
-        }
+    /* Card Laporan */
+    .card-report {
+        background-color: #ffffff;
+        border-radius: 1.25rem;
+        box-shadow: 0 8px 24px rgba(55, 71, 63, 0.08);
+        transition: all 0.3s ease;
+        border: 1px solid #eee;
+    }
 
-        .card-img-top {
-            height: 220px;
-            object-fit: cover;
-            border-top-left-radius: 1.25rem;
-            border-top-right-radius: 1.25rem;
-        }
+    .card-report:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 28px rgba(55, 71, 63, 0.15);
+    }
 
-        .badge-status {
-            position: absolute;
-            top: 14px;
-            left: 14px;
-            background: linear-gradient(to right, #ffc5ab, #ffd9c0);
-            color: #4a342e;
-            font-weight: 500;
-            font-size: 0.75rem;
-            padding: 5px 12px;
-            border-radius: 999px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-        }
+    .card-img-top {
+        height: 220px;
+        object-fit: cover;
+        border-top-left-radius: 1.25rem;
+        border-top-right-radius: 1.25rem;
+    }
 
-        .card-title {
-            font-weight: 700;
-            font-size: 1.1rem;
-            color: #333;
-            margin-bottom: 0.25rem;
-        }
+    .card-title {
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: #333;
+        margin-bottom: 0.25rem;
+    }
 
-        .card-text {
-            font-size: 0.9rem;
-            color: #555;
-        }
+    .card-text {
+        font-size: 0.9rem;
+        color: #555;
+    }
 
-        .btn-outline-dark {
-            border-color: var(--primary-teal);
-            color: var(--primary-teal);
-            font-weight: 600;
-            transition: 0.3s ease;
-        }
+    .badge-status {
+        position: absolute;
+        top: 14px;
+        left: 14px;
+        background: var(--accent);
+        color: #4a342e;
+        font-weight: 500;
+        font-size: 0.75rem;
+        padding: 5px 12px;
+        border-radius: 999px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
 
-        .btn-outline-dark:hover {
-            background-color: var(--primary-teal);
-            color: white;
-        }
+    /* Paw print background (hiasan) */
+    .paw-print-bg {
+        position: absolute;
+        width: 100px;
+        height: auto;
+        opacity: 0.04;
+        z-index: 0;
+    }
 
-        .card-footer {
-            background-color: transparent;
-            font-size: 0.75rem;
-            color: #888;
-        }
+    .paw-print-left {
+        top: 10%;
+        left: 3%;
+    }
 
-        footer {
-            background-color: var(--primary-teal);
-            color: #fff;
-            padding: 1.2rem 0;
-            font-size: 0.85rem;
-            text-align: center;
-        }
+    .paw-print-right {
+        bottom: 10%;
+        right: 3%;
+    }
 
-        .hero-card {
-            overflow: hidden;
-        }
+    /* Footer */
+    footer {
+        background-color: var(--primary-green);
+        color: #fff;
+        padding: 1.2rem 0;
+        font-size: 0.85rem;
+        text-align: center;
+    }
 
-        .card-report {
-            background-color: #ffffff;
-            border: 1px solid #e6f4f1;
-            
-        }
-    </style>
+    .card-footer {
+        background-color: transparent;
+        font-size: 0.75rem;
+        color: #888;
+    }
+</style>
+
 </head>
 
 <body>
@@ -162,12 +170,12 @@
             <div class="ms-auto">
                 @guest
                 <a href="{{ route('login') }}" class="btn btn-outline-light me-2">Login</a>
-                <a href="{{ route('register') }}" class="btn btn-light">Register</a>
+                <a href="{{ route('register') }}" class="btn btn-outline-light me-2">Register</a>
                 @else
                 @if(Auth::user()->role == 'admin')
-                <a href="{{ route('admin.dashboard') }}" class="btn btn-danger">Admin Panel</a>
+                <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-secondary">Admin Panel</a>
                 @else
-                <a href="{{ route('user.dashboard') }}" class="btn btn-light">My Dashboard</a>
+                <a href="{{ route('user.dashboard') }}" class="btn btn-outline-secondary">My Dashboard</a>
                 @endif
                 @endguest
             </div>
@@ -177,7 +185,7 @@
     <header class="bg-transparent py-5">
         <div class="container">
             <div class="card shadow-lg border-0 p-4 position-relative hero-card"
-                style="border-radius: 1.5rem; background: linear-gradient(to right, #e0f2f1, #ffffff);">
+                style="border-radius: 1.5rem; background: linear-gradient(to right, #f5f5f5, #ffffff);">
                 <img src="{{ asset('image/paw-print.png') }}" class="paw-print-bg paw-print-left" alt="paw decoration">
                 <img src="{{ asset('image/paw-print.png') }}" class="paw-print-bg paw-print-right" alt="paw decoration">
                 <div class="row align-items-center g-4">
@@ -211,9 +219,9 @@
                     <span class="badge-status">
                         <i class="fas fa-check-circle me-1"></i> {{ $report->status }}
                     </span>
-                    <img src="{{ asset('storage/' . $report->image_path) }}" class="card-img-top" alt="Foto {{ $report->animal->name }}">
+                    <img src="{{ asset('storage/' . $report->image_path) }}" class="card-img-top" alt="Foto {{ optional($report->animal)->name ?? 'Hewan' }}">
                     <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">{{ $report->animal->name }}</h5>
+                        <h5 class="card-title">{{ optional($report->animal)->name ?? '-' }}</h5>
                         <p class="card-text text-muted"><i class="fas fa-map-marker-alt me-2"></i>{{ Str::limit($report->address, 50) }}</p>
                         <a href="{{ route('laporan.detail', $report->id) }}" class="btn btn-outline-dark w-100 mt-auto">Lihat Detail</a>
                     </div>

@@ -11,21 +11,24 @@
     <!-- Font Awesome (untuk ikon) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <!-- Custom CSS for Admin Panel -->
+    <!-- Custom CSS -->
     <style>
     :root {
-        --primary-green: #37473f;   /* hijau tua tombol login */
-        --secondary-green: #4b5f55; /* hover tombol login */
+        --primary-green: #37473f;   /* hijau tua */
+        --secondary-green: #4b5f55; /* hover */
         --accent-beige: #f5f5f5;    /* latar belakang */
     }
 
     body {
         background-color: var(--accent-beige);
         font-family: 'Segoe UI', sans-serif;
+        margin: 0;
+        padding: 0;
     }
 
     .sidebar {
         position: fixed;
+        z-index: 1000;
         top: 0;
         left: 0;
         bottom: 0;
@@ -79,29 +82,47 @@
     .main-content {
         margin-left: 250px;
         padding: 25px;
+        position: relative;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
     }
 
     .navbar-admin {
-        background-color: #fff;
-        border-bottom: 1px solid #dee2e6;
+        background-color: var(--primary-green);
+        color: #fff;
+        border-bottom: none;
     }
 
-    .navbar-text strong {
-        color: var(--primary-green);
+    .navbar-admin .navbar-brand,
+    .navbar-admin .navbar-text,
+    .navbar-admin .navbar-text strong {
+        color: #fff;
+    }
+
+    main {
+        flex: 1;
+    }
+
+    footer {
+        background-color: var(--primary-green);
+        color: #fff;
+        padding: 15px 0;
+        text-align: center;
+        font-size: 0.9rem;
     }
 
     .alert {
         border-radius: 8px;
     }
-</style>
-
+    </style>
 </head>
 <body>
     <div class="sidebar">
         <div class="sidebar-header">
             <a href="{{ route('admin.dashboard') }}">CaPaw! 🐾</a>
         </div>
-        <ul class="nav flex-column">
+        <ul class="nav flex-column mt-4">
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">
                     <i class="fa-fw fas fa-tachometer-alt"></i> Dashboard
@@ -162,6 +183,10 @@
 
             @yield('content')
         </main>
+
+        <!-- <footer>
+            © 2025 CaPaw! - Sistem Pengaduan Hewan. Semua Hak Cipta Dilindungi.
+        </footer> -->
     </div>
 
     <!-- Bootstrap JS -->

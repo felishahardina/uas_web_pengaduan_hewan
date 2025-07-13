@@ -47,7 +47,7 @@
 </style>
 
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <a href="{{ route('admin.reports.index') }}" class="btn btn-secondary">
+    <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary"> 
         <i class="fas fa-arrow-left me-2"></i>Kembali ke Daftar Laporan
     </a>
 </div>

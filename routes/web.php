@@ -11,6 +11,7 @@ use App\Http\Controllers\FelishaAnimalController;
 use App\Http\Controllers\FelishaReportController;
 use App\Http\Controllers\HomepageController;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,6 +32,11 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::get('/laporan/{id}', [FelishaReportController::class, 'show'])->name('laporan.show');
+
+Route::get('/laporan/{id}', [FelishaReportController::class, 'show'])->name('laporan.show');
+
 
 
 // =======================
@@ -73,3 +79,4 @@ Route::middleware(['auth', \App\Http\Middleware\IsAdmin::class])
     Route::delete('reports/{report}', [FelishaReportController::class, 'destroyAdmin'])->name('reports.destroy');
 
 });
+

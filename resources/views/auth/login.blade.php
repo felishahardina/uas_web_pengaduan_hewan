@@ -1,3 +1,4 @@
+<!-- login.blade.php (UPDATED with consistent colors) -->
 @extends('layouts.app-user')
 
 @section('title', 'Login')
@@ -5,15 +6,15 @@
 @section('content')
 <style>
     :root {
-        --primary-teal: #00897B;
-        --light-teal: #e0f2f1;
-        --light-beige: #fdf9f4;
+        --primary-green: #37473f;
+        --secondary-green: #4b5f55;
+        --soft-beige: #f5f5f5;
         --accent: #FFD1BA;
         --card-radius: 1.5rem;
     }
 
     body {
-        background-color: var(--light-beige);
+        background-color: var(--soft-beige);
         font-family: 'Poppins', sans-serif;
     }
 
@@ -30,22 +31,22 @@
         width: 100%;
         border-radius: var(--card-radius);
         overflow: hidden;
-        box-shadow: 0 8px 30px rgba(0, 137, 123, 0.1);
+        box-shadow: 0 8px 30px rgba(55, 71, 63, 0.1);
         background-color: #fff;
     }
 
     .auth-image-side {
         background: url("{{ asset('image/cat.png') }}") no-repeat center center;
         background-size: contain;
-        background-color: var(--light-teal);
+        background-color: var(--secondary-green);
     }
 
     .auth-form-side {
         padding: 2rem;
     }
 
-    .btn-teal {
-        background-color: var(--primary-teal);
+    .btn-green {
+        background-color: var(--primary-green);
         border: none;
         color: #fff;
         font-weight: 600;
@@ -54,8 +55,8 @@
         transition: all 0.3s ease;
     }
 
-    .btn-teal:hover {
-        background-color: #00796b;
+    .btn-green:hover {
+        background-color: var(--secondary-green);
     }
 
     .form-control {
@@ -68,35 +69,19 @@
         box-shadow: 0 0 0 0.15rem rgba(255, 209, 186, 0.4);
     }
 
-    .error-cat {
-        max-width: 120px;
-        margin: 0 auto 10px;
-    }
-
     .password-toggle {
-            position: absolute;
-            top: 52px;
-            right: 1rem;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: #aaa;
-            z-index: 5;
-            font-size: 1rem;
-        }
+        position: absolute;
+        top: 52px;
+        right: 1rem;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #aaa;
+        z-index: 5;
+        font-size: 1rem;
+    }
 
     .position-relative {
         position: relative;
-    }
-
-    @media (max-width: 768px) {
-        .auth-card {
-            flex-direction: column;
-        }
-
-        .auth-image-side {
-            height: 200px;
-            background-size: cover;
-        }
     }
 </style>
 
@@ -106,23 +91,15 @@
             <div class="card auth-card shadow-lg">
                 <div class="row g-0">
                     <div class="col-lg-6 d-none d-lg-block auth-image-side"></div>
-
                     <div class="col-lg-6 auth-form-side">
                         <div class="text-center mb-4">
-                            <h2 class="fw-bold text-teal"><i class="fas fa-paw me-2"></i>Selamat Datang Kembali</h2>
+                            <h2 class="fw-bold" style="color: var(--primary-green)"><i class="fas fa-paw me-2"></i>Selamat Datang Kembali</h2>
                             <p class="text-muted">Login untuk melanjutkan dan membantu hewan.</p>
                         </div>
 
-                        {{-- Pesan Error --}}
                         @if(session('error'))
-                            <div class="text-center">
-                                <img src="{{ asset('image/sad-cat.png') }}" class="error-cat" alt="Sad Cat">
-                            </div>
-                            <div class="alert alert-danger text-center">
-                                {{ session('error') }}
-                            </div>
+                            <div class="alert alert-danger text-center">{{ session('error') }}</div>
                         @endif
-
                         @if(session('success'))
                             <div class="alert alert-success text-center">{{ session('success') }}</div>
                         @endif
@@ -131,27 +108,19 @@
                             @csrf
                             <div class="mb-3">
                                 <label for="email" class="form-label">Alamat Email</label>
-                                <input id="email" type="email"
-                                       class="form-control @error('email') is-invalid @enderror"
-                                       name="email" value="{{ old('email') }}" required autofocus>
-                                @error('email')
-                                    <span class="invalid-feedback d-block"><strong>{{ $message }}</strong></span>
-                                @enderror
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autofocus>
+                                @error('email')<span class="invalid-feedback d-block"><strong>{{ $message }}</strong></span>@enderror
                             </div>
 
                             <div class="mb-3 position-relative">
                                 <label for="password" class="form-label">Password</label>
-                                <input id="password" type="password"
-                                       class="form-control @error('password') is-invalid @enderror"
-                                       name="password" required>
+                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required>
                                 <i class="fas fa-eye password-toggle" id="togglePassword"></i>
-                                @error('password')
-                                    <span class="invalid-feedback d-block"><strong>{{ $message }}</strong></span>
-                                @enderror
+                                @error('password')<span class="invalid-feedback d-block"><strong>{{ $message }}</strong></span>@enderror
                             </div>
 
                             <div class="d-grid mb-3">
-                                <button type="submit" class="btn btn-teal btn-lg">Login</button>
+                                <button type="submit" class="btn btn-green btn-lg">Login</button>
                             </div>
 
                             <div class="text-center">
@@ -165,7 +134,6 @@
     </div>
 </div>
 
-{{-- JS untuk Toggle Password --}}
 <script>
     const toggle = document.getElementById('togglePassword');
     const password = document.getElementById('password');

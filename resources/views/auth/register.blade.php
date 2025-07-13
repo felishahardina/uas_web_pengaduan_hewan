@@ -5,91 +5,149 @@
 @section('content')
 <style>
     :root {
-        --primary-brown: #6d4c41;
-        --secondary-brown: #a1887f;
-        --background-beige: #f5f5f5;
+        --primary-green: #37473f;
+        --secondary-green: #4b5f55;
+        --soft-beige: #f5f5f5;
+        --accent: #FFD1BA;
     }
+
+    body {
+        background-color: var(--soft-beige);
+        font-family: 'Poppins', sans-serif;
+    }
+
     .auth-container {
         min-height: 80vh;
         display: flex;
         align-items: center;
+        justify-content: center;
+        padding: 1rem;
     }
+
     .auth-card {
-        border: none;
+        max-width: 640px;
+        width: 100%;
         border-radius: 1rem;
         overflow: hidden;
     }
+
     .auth-form-side {
-        padding: 3rem;
+        padding: 1rem 1.25rem;
+        max-width: 260px;
+        margin: auto;
+        background-color: #fff;
+        font-size: 0.9rem;
     }
+
     .auth-image-side {
-        background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://placehold.co/600x800/8d6e63/FFFFFF?text=Bergabunglah');
-        background-size: cover;
-        background-position: center;
+        background: url('{{ asset("image/cat.png") }}') no-repeat center center;
+        background-size: contain;
+        background-color: var(--soft-beige);
     }
-    .btn-brown {
-        background-color: var(--primary-brown);
-        border-color: var(--primary-brown);
+
+    .btn-green {
+        background-color: var(--primary-green);
+        border: none;
+        color: #fff;
+        font-weight: 600;
+        padding: 0.55rem;
+        font-size: 0.9rem;
+        border-radius: 0.6rem;
+        transition: all 0.3s ease;
+    }
+
+    .btn-green:hover {
+        background-color: var(--secondary-green);
         color: #fff;
     }
-    .btn-brown:hover {
-        background-color: #5d4037;
-        border-color: #5d4037;
-        color: #fff;
+
+    .form-control {
+        border-radius: 0.5rem;
+        font-size: 0.9rem;
+        padding: 0.45rem 0.75rem;
     }
+
     .form-control:focus {
-        border-color: var(--secondary-brown);
-        box-shadow: 0 0 0 0.25rem rgba(109, 76, 65, 0.25);
+        border-color: var(--accent);
+        box-shadow: 0 0 0 0.15rem rgba(255, 209, 186, 0.4);
+    }
+
+    .form-label {
+        font-size: 0.9rem;
+        margin-bottom: 0.2rem;
+    }
+
+    @media (max-width: 768px) {
+        .auth-card {
+            flex-direction: column;
+        }
+
+        .auth-image-side {
+            height: 200px;
+            background-size: contain;
+        }
+
+        .auth-form-side {
+            max-width: 100%;
+        }
     }
 </style>
 
 <div class="container auth-container">
     <div class="row justify-content-center w-100">
-        <div class="col-lg-8">
-            <div class="card auth-card shadow-lg">
-                <div class="row g-0">
-                    <div class="col-lg-6 auth-form-side">
-                        <div class="text-center mb-4">
-                            <h2 class="fw-bold text-brown"><i class="fas fa-user-plus me-2"></i>Buat Akun Baru</h2>
-                            <p class="text-muted">Bergabunglah dengan komunitas peduli hewan.</p>
+        <div class="col-md-10 mx-auto">
+            <div class="card auth-card shadow-lg mx-auto d-flex flex-row">
+                <div class="col-lg-6 auth-form-side">
+                    <div class="text-center mb-3">
+                        <h4 class="fw-bold text-dark mb-1"><i class="fas fa-user-plus me-2"></i>Buat Akun Baru</h4>
+                        <p class="text-muted mb-3" style="font-size: 0.85rem;">Bergabunglah dengan komunitas peduli hewan.</p>
+                    </div>
+                    <form method="POST" action="{{ route('register') }}">
+                        @csrf
+                        <div class="mb-2">
+                            <label for="name" class="form-label">Nama Lengkap</label>
+                            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror"
+                                name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                            @error('name')
+                            <span class="invalid-feedback d-block"><strong>{{ $message }}</strong></span>
+                            @enderror
                         </div>
-                        <form method="POST" action="{{ route('register') }}">
-                            @csrf
-                            <div class="mb-3">
-                                <label for="name" class="form-label">Nama Lengkap</label>
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
-                                @error('name')<span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>@enderror
-                            </div>
 
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Alamat Email</label>
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
-                                @error('email')<span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>@enderror
-                            </div>
+                        <div class="mb-2">
+                            <label for="email" class="form-label">Alamat Email</label>
+                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
+                                name="email" value="{{ old('email') }}" required autocomplete="email">
+                            @error('email')
+                            <span class="invalid-feedback d-block"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
 
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Password</label>
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-                                @error('password')<span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>@enderror
-                            </div>
+                        <div class="mb-2">
+                            <label for="password" class="form-label">Password</label>
+                            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror"
+                                name="password" required autocomplete="new-password">
+                            @error('password')
+                            <span class="invalid-feedback d-block"><strong>{{ $message }}</strong></span>
+                            @enderror
+                        </div>
 
-                            <div class="mb-3">
-                                <label for="password-confirm" class="form-label">Konfirmasi Password</label>
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                            </div>
+                        <div class="mb-3">
+                            <label for="password-confirm" class="form-label">Konfirmasi Password</label>
+                            <input id="password-confirm" type="password" class="form-control"
+                                name="password_confirmation" required autocomplete="new-password">
+                        </div>
 
-                            <div class="d-grid mb-3">
-                                <button type="submit" class="btn btn-brown btn-lg">Register</button>
-                            </div>
+                        <div class="d-grid mb-2">
+                            <button type="submit" class="btn btn-green">Register</button>
+                        </div>
 
-                            <div class="text-center">
-                                <small>Sudah punya akun? <a href="{{ route('login') }}">Login di sini</a></small>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="col-lg-6 d-none d-lg-block auth-image-side">
-                        {{-- Sisi gambar, hanya tampil di layar besar --}}
-                    </div>
+                        <div class="text-center">
+                            <small>Sudah punya akun? <a href="{{ route('login') }}">Login di sini</a></small>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-6 d-none d-lg-block auth-image-side">
+                    {{-- Gambar sisi kanan --}}
                 </div>
             </div>
         </div>

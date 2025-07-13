@@ -17,19 +17,17 @@ class FelishaReport extends Model
     ];
     public function animal()
     {
-        return $this->belongsTo(FelishaAnimal::class, 'felisha_animal_id');
+        return $this->belongsTo(FelishaAnimal::class, 'animal_id');
     }
 
-public function location()
-{
-    return $this->belongsTo(FelishaLocation::class);
-}
 
-public function user()
-{
-    return $this->belongsTo(User::class);
-}
+    public function location()
+    {
+        return $this->belongsTo(FelishaLocation::class);
+    }
 
-
-
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

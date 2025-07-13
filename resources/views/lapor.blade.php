@@ -5,19 +5,19 @@
 @section('content')
 <style>
     :root {
-        --primary-green: #394a45;
-        --accent-green: #617c72;
-        --light-bg: #fff9f4;
+        --primary-green: #37473f;
+        --accent-green: #4b5f55;
+        --soft-beige: #f5f5f5;
     }
 
     body {
-        background-color: var(--light-bg);
+        background-color: var(--soft-beige);
     }
 
     .card {
         border: none;
         border-radius: 10px;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
     }
 
     .card-header {
@@ -37,7 +37,7 @@
     .form-control:focus,
     .form-select:focus {
         border-color: var(--accent-green);
-        box-shadow: 0 0 0 0.25rem rgba(97, 124, 114, 0.25);
+        box-shadow: 0 0 0 0.25rem rgba(75, 95, 85, 0.25); /* rgba dari accent */
     }
 
     .form-check-input:checked {
@@ -52,10 +52,11 @@
     }
 
     .btn-green:hover {
-        background-color: #2f3d39;
+        background-color: #2d3936;
         color: white;
     }
 </style>
+
 
 <div class="container my-5">
     <div class="row justify-content-center">
