@@ -47,7 +47,7 @@
 </style>
 
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary"> 
+    <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">
         <i class="fas fa-arrow-left me-2"></i>Kembali ke Daftar Laporan
     </a>
 </div>
@@ -66,12 +66,12 @@
                         <th>Status Laporan</th>
                         <td>
                             @php
-                                $statusClass = match($report->status) {
-                                    'approved' => 'badge-approved',
-                                    'pending' => 'badge-pending',
-                                    'rejected' => 'badge-rejected',
-                                    default => 'bg-secondary'
-                                };
+                            $statusClass = match($report->status) {
+                            'approved' => 'badge-approved',
+                            'pending' => 'badge-pending',
+                            'rejected' => 'badge-rejected',
+                            default => 'bg-secondary'
+                            };
                             @endphp
                             <span class="badge {{ $statusClass }} fs-6">{{ ucfirst($report->status) }}</span>
                         </td>
@@ -124,9 +124,9 @@
             <div class="col-md-5">
                 <h5>Foto Laporan</h5>
                 @if($report->image_path)
-                    <img src="{{ asset('storage/' . $report->image_path) }}" class="img-fluid rounded shadow-sm" alt="Foto Laporan">
+                <img src="{{ asset('storage/' . $report->image_path) }}" class="img-fluid rounded shadow-sm" alt="Foto Laporan">
                 @else
-                    <div class="alert alert-warning">Tidak ada foto yang diunggah.</div>
+                <div class="alert alert-warning">Tidak ada foto yang diunggah.</div>
                 @endif
             </div>
         </div>
@@ -134,6 +134,39 @@
 
     <!-- Tombol Aksi -->
     <div class="card-footer text-end">
+    @if($report->status != 'approved')
+        <form action="{{ route('admin.reports.approve', $report->id) }}" method="POST" class="d-inline">
+            @csrf
+            @method('PATCH')
+            <button type="submit" class="btn btn-dark-green me-2">
+                <i class="fas fa-check me-1"></i>Approve
+            </button>
+        </form>
+    @endif
+
+    @if($report->status != 'rejected')
+        <form action="{{ route('admin.reports.reject', $report->id) }}" method="POST" class="d-inline">
+            @csrf
+            @method('PATCH')
+            <button type="submit" class="btn btn-warning text-dark me-2">
+                <i class="fas fa-times me-1"></i>Reject
+            </button>
+        </form>
+    @endif
+
+    <form action="{{ route('admin.reports.destroy', $report->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin hapus laporan ini secara permanen?');">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-danger">
+            <i class="fas fa-trash me-1"></i>Hapus
+        </button>
+    </form>
+</div>
+
+
+
+
+    <!-- <div class="card-footer text-end">
         @if($report->status == 'pending')
             <form action="{{ route('admin.reports.approve', $report->id) }}" method="POST" class="d-inline">
                 @csrf
@@ -151,6 +184,6 @@
             @method('DELETE')
             <button type="submit" class="btn btn-danger"><i class="fas fa-trash me-2"></i>Hapus Permanen</button>
         </form>
-    </div>
+    </div> -->
 </div>
 @endsection

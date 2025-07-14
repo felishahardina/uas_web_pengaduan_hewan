@@ -35,14 +35,10 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/laporan/{id}', [FelishaReportController::class, 'show'])->name('laporan.show');
 
-Route::get('/laporan/{id}', [FelishaReportController::class, 'show'])->name('laporan.show');
-
-
-
 // =======================
 // USER ROUTES (Memerlukan Login sebagai User)
 // =======================
-// PERBAIKAN: Menggunakan path lengkap untuk middleware dan memastikan sintaks ->group() benar.
+
 Route::middleware(['auth', \App\Http\Middleware\IsUser::class])->group(function () {
     Route::get('/dashboard', [FelishaReportController::class, 'userDashboard'])->name('user.dashboard');
     Route::get('/lapor', [FelishaReportController::class, 'create'])->name('lapor');
@@ -50,13 +46,13 @@ Route::middleware(['auth', \App\Http\Middleware\IsUser::class])->group(function 
     Route::get('/laporan-saya', [FelishaReportController::class, 'userReports'])->name('laporan.saya');
 });
 
-
 // ===================================================
 // ADMIN ROUTES (Memerlukan Login sebagai Admin)
 // ===================================================
+
 Route::middleware(['auth', \App\Http\Middleware\IsAdmin::class])
-    ->prefix('admin') // Semua URL diawali dengan /admin/...
-    ->name('admin.')   // Semua nama rute diawali dengan admin. ...
+    ->prefix('admin') 
+    ->name('admin.')   
     ->group(function () {
 
     // Dashboard
@@ -80,3 +76,4 @@ Route::middleware(['auth', \App\Http\Middleware\IsAdmin::class])
 
 });
 
+Route::get('/laporan/{id}', [FelishaReportController::class, 'show'])->name('laporan.show');
