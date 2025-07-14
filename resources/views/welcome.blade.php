@@ -160,7 +160,6 @@
         color: #888;
     }
 </style>
-
 </head>
 
 <body>
@@ -182,34 +181,7 @@
         </div>
     </nav>
 
-    <header class="bg-transparent py-5">
-        <div class="container">
-            <div class="card shadow-lg border-0 p-4 position-relative hero-card"
-                style="border-radius: 1.5rem; background: linear-gradient(to right, #f5f5f5, #ffffff);">
-                <img src="{{ asset('image/paw-print.png') }}" class="paw-print-bg paw-print-left" alt="paw decoration">
-                <img src="{{ asset('image/paw-print.png') }}" class="paw-print-bg paw-print-right" alt="paw decoration">
-                <div class="row align-items-center g-4">
-                    <div class="col-lg-6 text-center text-lg-start animate__animated animate__fadeInLeft">
-                        <h1 class="fw-bold mb-3">🐾 Bantu Temukan Mereka</h1>
-                        <p class="lead text-muted mb-4">Laporkan hewan hilang atau temukan sahabat berkaki empat di sekitar Anda.</p>
-                        @auth
-                        <a href="{{ route('lapor') }}" class="btn btn-dark-green px-4 py-2">
-                            <i class="fas fa-bullhorn me-2"></i> Lapor Sekarang
-                        </a>
-                        @else
-                        <a href="{{ route('login') }}" class="btn btn-dark-green px-4 py-2">
-                            <i class="fas fa-sign-in-alt me-2"></i> Login untuk Lapor
-                        </a>
-                        @endauth
-                    </div>
-                    <div class="col-lg-6 text-center animate__animated animate__zoomIn">
-                        <img src="{{ asset('image/cat.png') }}" alt="Cute Cat" class="img-fluid" style="max-height: 300px;">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-
+     <!-- SECTION 1: Laporan Hewan Terbaru (dipindah ke atas) -->
     <main class="container my-5">
         <h2 class="text-center fw-bold mb-4">Laporan Hewan Terbaru</h2>
         <div class="row">
@@ -239,6 +211,42 @@
             </div>
             @endforelse
         </div>
+
+        @if($reports->hasPages())
+        <div class="d-flex justify-content-center mt-4">
+            {{ $reports->links() }}
+        </div>
+        @endif
+    </main>
+
+    <!-- SECTION 2: Hero Section dipindah ke bawah -->
+    <header class="bg-transparent py-5">
+        <div class="container">
+            <div class="card shadow-lg border-0 p-4 position-relative hero-card"
+                style="border-radius: 1.5rem; background: linear-gradient(to right, #f5f5f5, #ffffff);">
+                <img src="{{ asset('image/paw-print.png') }}" class="paw-print-bg paw-print-left" alt="paw decoration">
+                <img src="{{ asset('image/paw-print.png') }}" class="paw-print-bg paw-print-right" alt="paw decoration">
+                <div class="row align-items-center g-4">
+                    <div class="col-lg-6 text-center text-lg-start animate__animated animate__fadeInLeft">
+                        <h1 class="fw-bold mb-3">🐾 Bantu Temukan Mereka</h1>
+                        <p class="lead text-muted mb-4">Laporkan hewan hilang atau temukan sahabat berkaki empat di sekitar Anda.</p>
+                        @auth
+                        <a href="{{ route('lapor') }}" class="btn btn-dark-green px-4 py-2">
+                            <i class="fas fa-bullhorn me-2"></i> Lapor Sekarang
+                        </a>
+                        @else
+                        <a href="{{ route('login') }}" class="btn btn-dark-green px-4 py-2">
+                            <i class="fas fa-sign-in-alt me-2"></i> Login untuk Lapor
+                        </a>
+                        @endauth
+                    </div>
+                    <div class="col-lg-6 text-center animate__animated animate__zoomIn">
+                        <img src="{{ asset('image/cat.png') }}" alt="Cute Cat" class="img-fluid" style="max-height: 300px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
 
         @if($reports->hasPages())
         <div class="d-flex justify-content-center mt-4">

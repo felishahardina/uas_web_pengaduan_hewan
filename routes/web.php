@@ -51,29 +51,29 @@ Route::middleware(['auth', \App\Http\Middleware\IsUser::class])->group(function 
 // ===================================================
 
 Route::middleware(['auth', \App\Http\Middleware\IsAdmin::class])
-    ->prefix('admin') 
-    ->name('admin.')   
+    ->prefix('admin')
+    ->name('admin.')
     ->group(function () {
 
-    // Dashboard
-    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        // Dashboard
+        Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // CRUD Penuh untuk Kategori
-    Route::resource('categories', FelishaCategoryController::class);
+        // CRUD Penuh untuk Kategori
+        Route::resource('categories', FelishaCategoryController::class);
 
-    // Admin hanya bisa melihat daftar Lokasi
-    // Route::get('locations', [FelishaLocationController::class, 'index'])->name('locations.index');
+        // Admin hanya bisa melihat daftar Lokasi
+        // Route::get('locations', [FelishaLocationController::class, 'index'])->name('locations.index');
 
-    // Admin hanya bisa melihat daftar Hewan
-    Route::get('animals', [FelishaAnimalController::class, 'index'])->name('animals.index');
+        // Admin hanya bisa melihat daftar Hewan
+        Route::get('animals', [FelishaAnimalController::class, 'index'])->name('animals.index');
 
-    // Manajemen Laporan oleh Admin
-    Route::get('reports', [FelishaReportController::class, 'indexAdmin'])->name('reports.index');
-    Route::get('reports/{report}', [FelishaReportController::class, 'showAdmin'])->name('reports.show');
-    Route::patch('reports/{report}/approve', [FelishaReportController::class, 'approve'])->name('reports.approve');
-    Route::patch('reports/{report}/reject', [FelishaReportController::class, 'reject'])->name('reports.reject');
-    Route::delete('reports/{report}', [FelishaReportController::class, 'destroyAdmin'])->name('reports.destroy');
+        // Manajemen Laporan oleh Admin
+        Route::get('reports', [FelishaReportController::class, 'indexAdmin'])->name('reports.index');
+        Route::get('reports/{report}', [FelishaReportController::class, 'showAdmin'])->name('reports.show');
+        Route::patch('reports/{report}/approve', [FelishaReportController::class, 'approve'])->name('reports.approve');
+        Route::patch('reports/{report}/reject', [FelishaReportController::class, 'reject'])->name('reports.reject');
+        Route::delete('reports/{report}', [FelishaReportController::class, 'destroyAdmin'])->name('reports.destroy');
+    });
 
-});
 
 Route::get('/laporan/{id}', [FelishaReportController::class, 'show'])->name('laporan.show');
